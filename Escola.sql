@@ -46,7 +46,7 @@
  ---ALTER TABLE Aluno ADD COLUMNS cidade VARCHAR(45);
 	  ALTER TABLE Aluno ADD COLUMN cidade VARCHAR(45);
 	  ALTER TABLE Disciplina MODIFY COLUMN nome VARCHAR(45) NULL;
-	  ALTER TABLE MODIFY COLUMN cidade VARCHAR(45) DEFAULT 'Jaraguá do Sul';
+	  ALTER TABLE MODIFY  ADD COLUMN cidade VARCHAR(45) DEFAULT 'Jaraguá do Sul';
 	 ----acrescentar a coluna Frequência para Matrícula
 	 ----acrescentar uma restrição para que a nota de um aluno seja sempre maior ou igual a zero
 	 
@@ -57,8 +57,7 @@
 	 INSERT INTO aluno (registro, nome, dataNascimento)
 			VALUES (1000, 'Henry', '2000-07-10'); 
 			
-	INSERT INTO aluno (registro, nome, dataNascimento)
-			VALUES (1001, 'Caio', '2001-07-10'); 
+	 
 			
 	INSERT INTO aluno (registro, nome, dataNascimento)
 			VALUES (1002, 'Iury', '2002-07-10'); 
@@ -68,13 +67,23 @@
 			
 
 	INSERT INTO Professor(codigo, nome, email, titilacao)
-			VALUES(1000, 'Bruno', 'bruno@ifsc.edu.br', 'Mestrado');
-			
+			VALUES(1000, 'Bruno', 'bruno@ifsc.edu.br', 'msc');
+
 	INSERT INTO Turma (codigo, disciplina, sigla, sala, professor)
 			VALUES(1000, 1, 0, 'B-302', 1000);
 			
-	INSERT INTO Matricula (id, turma, aluno, ano, nota)
-			VALUES(NULL, 1000, 1002, 2026, NULL);
+	INSERT INTO Matricula (turma, aluno, ano, nota)
+			VALUES(1000, 1002, '2026-03-01', NULL);
 			
 	  
 	-----ALTER TABLE turma MODIFY COLUMN sigla VARCHAR(20) DEFAULT 'ctds2023-1'
+	
+	-------drop trigger gatilho_aluno;
+---DELIMITER $$
+----create TRIGGER gatilho_aluno BEFORE INSERT
+---ON aluno FOR EACH ROW
+--BEGIN
+---    update turma set nAlunos=nAlunos + 1 where codigo = 1000;
+---END $$
+
+---DELIMITER ;
